@@ -9,6 +9,15 @@ Command-line interface for the [Hevy](https://www.hevyapp.com/) fitness app API.
 
 ## Installation
 
+### Homebrew (macOS)
+
+```bash
+brew tap sajal2692/tap
+brew install hevy-cli
+```
+
+### From source
+
 ```bash
 pip install .
 ```
