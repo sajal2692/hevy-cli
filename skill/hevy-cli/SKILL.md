@@ -7,17 +7,16 @@ description: Interact with the Hevy fitness app via the hevy-cli command-line to
 
 Use the `hevy` CLI to interact with Hevy fitness app data. Requires `HEVY_API_KEY` env var to be set.
 
+Always use `-j` for JSON output -- it provides exact IDs and complete data for parsing.
+
 ## Quick Start
 
 ```bash
 # Verify access
-hevy workouts count
+hevy -j workouts count
 
 # List recent workouts
-hevy workouts list --page-size 10
-
-# Raw JSON output for any command
-hevy -j workouts list
+hevy -j workouts list --page-size 10
 ```
 
 ## Common Tasks
@@ -25,25 +24,25 @@ hevy -j workouts list
 ### View workout history
 
 ```bash
-hevy workouts list --page 1 --page-size 10
-hevy workouts get <workout-id>
+hevy -j workouts list --page 1 --page-size 10
+hevy -j workouts get <workout-id>
 ```
 
 ### Check exercise progress
 
 ```bash
 # Find the exercise template ID first
-hevy exercises list --page-size 100
+hevy -j exercises list --page-size 100
 
 # Then get history for that exercise
-hevy exercises history <template-id>
-hevy exercises history <template-id> --start-date 2025-01-01 --end-date 2025-02-01
+hevy -j exercises history <template-id>
+hevy -j exercises history <template-id> --start-date 2025-01-01 --end-date 2025-02-01
 ```
 
 ### Create a workout
 
 ```bash
-hevy workouts create \
+hevy -j workouts create \
   --title "Push Day" \
   --start-time 2025-01-15T08:00:00Z \
   --end-time 2025-01-15T09:00:00Z \
@@ -55,25 +54,24 @@ For complex exercises, use a file: `--exercises-json @exercises.json`
 ### Manage routines
 
 ```bash
-hevy routines list
-hevy routines create --title "Upper Body" --exercises-json @routine.json
-hevy routines update <routine-id> --title "Updated Name"
+hevy -j routines list
+hevy -j routines create --title "Upper Body" --exercises-json @routine.json
+hevy -j routines update <routine-id> --title "Updated Name"
 ```
 
 ### Organize with folders
 
 ```bash
-hevy folders list
-hevy folders create --name "Hypertrophy Block"
+hevy -j folders list
+hevy -j folders create --name "Hypertrophy Block"
 ```
 
 ## Key Patterns
 
+- Always use `hevy -j` for JSON output to get structured, parseable data.
 - All list commands accept `--page` and `--page-size` for pagination.
-- Use `-j` flag before the subcommand for JSON output: `hevy -j workouts list`.
 - Exercise data for create/update uses `--exercises-json` accepting inline JSON or `@filepath`.
 - Set types: `normal`, `warmup`, `failure`, `dropset`.
-- IDs are returned in list/get responses -- use JSON mode (`-j`) to get exact IDs for subsequent commands.
 
 ## Full Command Reference
 
