@@ -174,6 +174,16 @@ def print_routines(data: dict) -> None:
 
 def print_routine_detail(data: dict) -> None:
     r = data.get("routine") or data
+    if isinstance(r, list):
+        if len(r) > 0:
+            r = r[0]
+        else:
+            console.print("[yellow]Warning: Empty list returned from API[/yellow]")
+            return
+    if not isinstance(r, dict):
+        console.print(f"[yellow]Warning: Unexpected data type: {type(r)}[/yellow]")
+        console.print(f"Data: {r}")
+        return
     title = r.get("title", "Untitled")
     notes = r.get("notes") or ""
     folder_id = r.get("folder_id")

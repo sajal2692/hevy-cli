@@ -55,9 +55,12 @@ For complex exercises, use a file: `--exercises-json @exercises.json`
 
 ```bash
 hevy -j routines list
-hevy -j routines create --title "Upper Body" --exercises-json @routine.json
+hevy -j folders list  # Get folder ID first
+hevy -j routines create --title "Upper Body" --folder-id <folder-id> --exercises-json @routine.json
 hevy -j routines update <routine-id> --title "Updated Name"
 ```
+
+**Important**: The Hevy API requires a `--folder-id` when creating routines. Use `hevy folders list` to find folder IDs, or create a new folder with `hevy folders create --name "Folder Name"`.
 
 ### Organize with folders
 

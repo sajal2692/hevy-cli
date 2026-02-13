@@ -31,9 +31,11 @@ hevy workouts update <workout-id> [--title TEXT] [--description TEXT] [--start-t
 ```bash
 hevy routines list [--page N] [--page-size 1-10]
 hevy routines get <routine-id>
-hevy routines create --title TEXT [--folder-id INT] [--notes TEXT] [--exercises-json JSON|@FILE]
+hevy routines create --title TEXT --folder-id INT [--notes TEXT] [--exercises-json JSON|@FILE]
 hevy routines update <routine-id> [--title TEXT] [--notes TEXT] [--exercises-json JSON|@FILE]
 ```
+
+**Note**: `--folder-id` is required when creating routines. Use `hevy folders list` to get available folder IDs.
 
 ## Exercise Templates
 

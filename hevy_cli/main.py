@@ -270,29 +270,41 @@ def routines_get(ctx: click.Context, routine_id: str) -> None:
 
 @routines.command("create")
 @click.option("--title", required=True)
-@click.option("--folder-id", default=None, type=int)
+@click.option("--folder-id", required=True, type=int, help="Routine folder ID (required). List folders with: hevy folders list")
 @click.option("--notes", default=None)
 @click.option("--exercises-json", default=None, help="JSON string or @file path for exercises array.")
 @click.pass_context
 def routines_create(
     ctx: click.Context,
     title: str,
-    folder_id: int | None,
+    folder_id: int,
     notes: str | None,
     exercises_json: str | None,
 ) -> None:
-    """Create a new routine."""
-    routine: dict = {"title": title}
-    if folder_id is not None:
-        routine["folder_id"] = folder_id
+    """Create a new routine. Note: folder-id is required by the Hevy API."""
+    if folder_id <= 0:
+        console.print("[red]Error: folder-id must be a positive integer[/red]")
+        sys.exit(1)
+
+    routine: dict = {"title": title, "folder_id": folder_id}
     if notes:
         routine["notes"] = notes
     if exercises_json:
         routine["exercises"] = _load_json_arg(exercises_json)
+
+    # Debug: Show what we're sending
+    if os.environ.get("DEBUG"):
+        console.print(f"[dim]DEBUG: Sending routine data: {routine}[/dim]")
+
     try:
         data = _get_client(ctx).create_routine(routine)
     except httpx.HTTPStatusError as e:
         _handle_api_error(e)
+
+    # Debug: Show what we received
+    if os.environ.get("DEBUG"):
+        console.print(f"[dim]DEBUG: Received data type: {type(data)}, value: {data}[/dim]")
+
     if ctx.obj["json"]:
         display.print_json(data)
     else:
